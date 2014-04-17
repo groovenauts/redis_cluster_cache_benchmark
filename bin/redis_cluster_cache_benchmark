@@ -1,3 +1,4 @@
 #!/usr/bin/env ruby
+$: << File.expand_path("../../lib", __FILE__)
 
-require 'redis_cluster_cache_benchmark'
+require 'redis_cluster_cache_benchmark/cli'

@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+$: << File.expand_path("../../lib", __FILE__)
+
+require 'redis_cluster_cache_benchmark'
+require 'tengine/support/yaml_with_erb'
+
+options = {
+  scenario: nil,
+  classname: nil,
+  config_path: nil,
+}
+ENV.each do |k, v|
+  next unless k =~ /\ARCCB_/
+  options[k.sub(/\ARCCB_/, '').downcase.to_sym] = v
+end
+
+RedisClusterCacheBenchmark::Worker.new(options).run

@@ -1,5 +1,8 @@
 require "redis_cluster_cache_benchmark/version"
 
 module RedisClusterCacheBenchmark
-  # Your code goes here...
+  autoload :Spawner      , "redis_cluster_cache_benchmark/spawner"
+  autoload :Worker       , "redis_cluster_cache_benchmark/worker"
+  autoload :LoggingClient, "redis_cluster_cache_benchmark/logging_client"
+  autoload :MemoryStorage, "redis_cluster_cache_benchmark/memory_storage"
 end
