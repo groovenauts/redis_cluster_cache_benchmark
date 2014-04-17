@@ -54,7 +54,7 @@ module RedisClusterCacheBenchmark
         begin
           load(@scenario)
         ensure
-          logger.info("No.%3d scenario %*d/%*d finished" % [@worker_no, len, idx + 1, len, @repeat])
+          logger.info("No.%3d scenario %*d/%*d finished Memory %8d KB" % [@worker_no, len, idx + 1, len, @repeat, `ps -o rss= -p #{Process.pid}`.to_i])
         end
       end
     end
