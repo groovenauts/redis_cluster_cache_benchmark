@@ -17,6 +17,9 @@ module RedisClusterCacheBenchmark
       end
       cmd = File.expand_path("../../../bin/worker", __FILE__)
       log_path_base = options["RCCB_LOG_PATH"] ? options["RCCB_LOG_PATH"].dup : nil
+      if log_path_base
+        system("rm #{log_path_base}.*")
+      end
       pids = []
       @process_number.times do |idx|
         if log_path_base
@@ -33,10 +36,10 @@ module RedisClusterCacheBenchmark
         end
       end
       if log_path_base
-        dir = File.dirname(log_path_base)
         system("cat #{log_path_base}.* > #{log_path_base}")
         system("grep get #{log_path_base} > #{log_path_base}.get")
         system("grep set #{log_path_base} > #{log_path_base}.set")
+        # dir = File.dirname(log_path_base)
         # system("ls -la #{dir}")
         calc_summary("#{log_path_base}.get", "get")
         calc_summary("#{log_path_base}.set", "set")
@@ -58,16 +61,18 @@ module RedisClusterCacheBenchmark
       idx95 = cnt * 95 / 100
       idx90 = cnt * 90 / 100
       idx_mid = cnt * 50 / 100
+      $stdout.puts
       $stdout.puts caption || path
       $stdout.puts "cnt: #{cnt} times"
       # $stdout.puts "sum: #{sum} microsec"
-      $stdout.puts "avg: %3.6f microsec" % avg
-      $stdout.puts "max: %3.6f microsec" % values.max
-      $stdout.puts " 99: %3.6f microsec" % values[idx99]
-      $stdout.puts " 95: %3.6f microsec" % values[idx95]
-      $stdout.puts " 90: %3.6f microsec" % values[idx90]
-      $stdout.puts "mid: %3.6f microsec" % values[idx_mid]
-      $stdout.puts "min: %3.6f microsec" % values.min
+      fmt = "%s: %9.3f microsec"
+      $stdout.puts fmt % ["avg", avg]
+      $stdout.puts fmt % ["max", values.max]
+      $stdout.puts fmt % ["99%", values[idx99]]
+      $stdout.puts fmt % ["95%", values[idx95]]
+      $stdout.puts fmt % ["90%", values[idx90]]
+      $stdout.puts fmt % ["mid", values[idx_mid]]
+      $stdout.puts fmt % ["min", values.min]
     end
 
   end
