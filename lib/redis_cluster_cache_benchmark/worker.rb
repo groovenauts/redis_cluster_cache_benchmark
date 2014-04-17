@@ -34,7 +34,8 @@ module RedisClusterCacheBenchmark
         {host: "127.0.0.1", port: 6379}
       case @classname
       when 'Redis', 'RedisWmrs' then
-        original = Redis.new(config)
+        klass = Object.const_get(@classname)
+        original = klass.new(config)
         original.client.logger = logger
         return LoggingClient.new(original, logger)
       when "RedisClusterCacheBenchmark::MemoryStorage" then
