@@ -41,6 +41,8 @@ module RedisClusterCacheBenchmark
         original = RedisClusterCacheBenchmark::MemoryStorage.new
         original.logger = logger
         return LoggingClient.new(original, logger)
+      else
+        raise "Unknown classname: #{@classname.inspect}"
       end
     end
 
