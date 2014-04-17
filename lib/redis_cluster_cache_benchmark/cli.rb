@@ -15,7 +15,7 @@ OptionParser.new{|opt|
   opt.on("-p", "--process=#{options[:process]}"    , "number of process"    ){|v| options[:process] = v.to_i }
   opt.on("-r", "--repeat=#{options[:repeat]}"      , "number of repeat"     ){|v| options[:repeat] = v.to_i }
   opt.on("-s", "--scenario=#{options[:scenario]}"  , "path to scenario file"){|v| options[:scenario] = v }
-  opt.on("-C", "--classname=#{options[:classname]}", "client class name"    ){|v| options[:process] = v }
+  opt.on("-C", "--classname=#{options[:classname]}", "client class name"    ){|v| options[:classname] = v }
   opt.on("-c", "--config=#{options[:config_path]}" , "path to config file"  ){|v| options[:config_path] = v }
   opt.on("-l", "--log-path=#{options[:log_path]}"  , "path to log file"     ){|v| options[:log_path] = v }
 }.parse!
