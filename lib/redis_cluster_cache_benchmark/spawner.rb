@@ -50,29 +50,17 @@ module RedisClusterCacheBenchmark
       values = []
       File.open(path) do |f|
         f.each_line do |line|
-          values << line.scan(/ ([\d\.]+) microsec\Z/).flatten.first.to_f
+          values.push line.scan(/ ([\d\.]+) microsec\Z/).flatten.first.to_f
         end
       end
-      values.sort!
-      sum = values.inject(:+)
-      cnt = values.length
-      avg = sum / cnt
-      idx99 = cnt * 99 / 100
-      idx95 = cnt * 95 / 100
-      idx90 = cnt * 90 / 100
-      idx_mid = cnt * 50 / 100
+      summary = Summary.new(values)
       $stdout.puts
       $stdout.puts caption || path
-      $stdout.puts "cnt: #{cnt} times"
-      # $stdout.puts "sum: #{sum} microsec"
-      fmt = "%s: %9.3f microsec"
-      $stdout.puts fmt % ["avg", avg]
-      $stdout.puts fmt % ["max", values.max]
-      $stdout.puts fmt % ["99%", values[idx99]]
-      $stdout.puts fmt % ["95%", values[idx95]]
-      $stdout.puts fmt % ["90%", values[idx90]]
-      $stdout.puts fmt % ["mid", values[idx_mid]]
-      $stdout.puts fmt % ["min", values.min]
+      $stdout.puts "cnt: #{summary[:cnt]} times"
+      fmt = "%3s: %9.3f microsec"
+      %w[avg max 99 95 90 80 50 min].each do |k|
+        $stdout.puts fmt % [k, summary[k].to_f]
+      end
     end
 
   end
