@@ -1,0 +1,3 @@
+#!/usr/bin/env ruby
+
+require 'redis_cluster_cache_benchmark'
