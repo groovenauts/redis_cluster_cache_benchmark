@@ -67,7 +67,7 @@ module RedisClusterCacheBenchmark
       $stdout.puts
       $stdout.puts caption
       $stdout.puts "cnt: #{summary[:cnt]}"
-      %w[avg max 99 95 90 80 50 min].each do |k|
+      %w[sum avg max 99 95 90 80 50 min].each do |k|
         $stdout.puts fmt % [k, summary[k].to_f]
       end
     end

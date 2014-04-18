@@ -9,9 +9,11 @@ module RedisClusterCacheBenchmark
     def initialize(values, positions = DEFAULT_POSITIONS)
       values = values.sort
       cnt = values.length
+      sum = values.inject(:+)
       @hash = {
         cnt: cnt,
-        avg: values.inject(:+) / cnt,
+        sum: sum,
+        avg: sum / cnt,
         min: values.first,
         max: values.last,
       }
