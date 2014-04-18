@@ -1,0 +1,9 @@
+master_name: "sentinel_apisrv"
+driver: hiredis
+sentinels:
+- host: "apisrv01"
+  port: 26379
+- host: "apisrv02"
+  port: 26379
+- host: "apisrv03"
+  port: 26379
