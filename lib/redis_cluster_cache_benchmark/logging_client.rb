@@ -8,11 +8,11 @@ module RedisClusterCacheBenchmark
     end
 
     def get(key)
-      __logging__("get"){ @impl.get(key) }
+      __logging__("[GET]"){ @impl.get(key) }
     end
 
     def set(key, value, options = {})
-      __logging__("set"){ @impl.set(key, value, options) }
+      __logging__("[SET]"){ @impl.set(key, value, options) }
     end
 
     private

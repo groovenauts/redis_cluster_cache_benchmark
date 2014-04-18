@@ -37,16 +37,16 @@ module RedisClusterCacheBenchmark
       end
       if log_path_base
         system("cat #{log_path_base}.* > #{log_path_base}")
-        system("grep get #{log_path_base} > #{log_path_base}.get")
-        system("grep set #{log_path_base} > #{log_path_base}.set")
+        system("grep \[GET\] #{log_path_base} > #{log_path_base}.get")
+        system("grep \[SET\] #{log_path_base} > #{log_path_base}.set")
         # dir = File.dirname(log_path_base)
         # system("ls -la #{dir}")
-        calc_summary("#{log_path_base}.get", "get")
-        calc_summary("#{log_path_base}.set", "set")
+        calc_time_summary("#{log_path_base}.get", "get")
+        calc_time_summary("#{log_path_base}.set", "set")
       end
     end
 
-    def calc_summary(path, caption = nil)
+    def calc_time_summary(path, caption = nil)
       values = []
       File.open(path) do |f|
         f.each_line do |line|
