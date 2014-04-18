@@ -75,7 +75,7 @@ module RedisClusterCacheBenchmark
     end
 
     def process_rss(command_name)
-      r = `ps a -o pid,command | grep #{command_name} | grep -v grep\\ #{command_name}`
+      r = `ps ax -o pid,command | grep #{command_name} | grep -v grep\\ #{command_name}`
       return 0 if r.nil? || r.empty?
       pid = r.strip.split(/\s+/, 2).first.to_i
       `ps -o rss= -p #{pid}`.to_i
