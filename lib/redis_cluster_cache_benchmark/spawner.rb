@@ -44,19 +44,21 @@ module RedisClusterCacheBenchmark
       system("grep \"\\[SET\\]\" #{log_path_base} > #{log_path_base}.set")
       system("grep \"\\[RSS\\] starting\" #{log_path_base} > #{log_path_base}.rss_starting")
       system("grep \"\\[RSS\\] completed\" #{log_path_base} > #{log_path_base}.rss_completed")
-      # dir = File.dirname(log_path_base)
-      # system("ls -la #{dir}")
-      calc_array_summary("#{log_path_base}.get", "[GET]", / ([\d\.]+) microsec\Z/, "%3s: %9.3f microsec")
-      calc_array_summary("#{log_path_base}.set", "[SET]", / ([\d\.]+) microsec\Z/, "%3s: %9.3f microsec")
-      calc_array_summary("#{log_path_base}.rss_starting" , "memory before start"  , / \d+: (\d+) KB\Z/, "%3s: %d KB")
-      calc_array_summary("#{log_path_base}.rss_completed", "memory after complete", / \d+: (\d+) KB\Z/, "%3s: %d KB")
-      $stdout.puts
-      $stdout.puts "redis-server"
-      $stdout.puts "starting : #{redis_server_starting_rss} KB"
-      $stdout.puts "completed: #{redis_server_completed_rss} KB"
+
+      File.open(File.expand_path("#{@base_name}.md", @options[:log_dir]), "w") do |f|
+        calc_array_summary(f, "#{log_path_base}.get", "[GET]", / ([\d\.]+) microsec\Z/, "%3s: %9.3f microsec")
+        calc_array_summary(f, "#{log_path_base}.set", "[SET]", / ([\d\.]+) microsec\Z/, "%3s: %9.3f microsec")
+        calc_array_summary(f, "#{log_path_base}.rss_starting" , "memory before start"  , / \d+: (\d+) KB\Z/, "%3s: %d KB")
+        calc_array_summary(f, "#{log_path_base}.rss_completed", "memory after complete", / \d+: (\d+) KB\Z/, "%3s: %d KB")
+        f.puts
+        f.puts "redis-server"
+        f.puts "starting : #{redis_server_starting_rss} KB"
+        f.puts "completed: #{redis_server_completed_rss} KB"
+      end
+      system("rm #{log_path_base}.*")
     end
 
-    def calc_array_summary(path, caption, pattern, fmt)
+    def calc_array_summary(f, path, caption, pattern, fmt)
       values = []
       File.open(path) do |f|
         f.each_line do |line|
@@ -64,11 +66,11 @@ module RedisClusterCacheBenchmark
         end
       end
       summary = Summary.new(values)
-      $stdout.puts
-      $stdout.puts caption
-      $stdout.puts "cnt: #{summary[:cnt]}"
+      f.puts
+      f.puts caption
+      f.puts "cnt: #{summary[:cnt]}"
       %w[sum avg max 99 95 90 80 50 min].each do |k|
-        $stdout.puts fmt % [k, summary[k].to_f]
+        f.puts fmt % [k, summary[k].to_f]
       end
     end
 
