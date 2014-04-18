@@ -39,8 +39,8 @@ module RedisClusterCacheBenchmark
       redis_server_completed_rss = process_rss("redis-server")
       if log_path_base
         system("cat #{log_path_base}.* > #{log_path_base}")
-        system("grep \[GET\] #{log_path_base} > #{log_path_base}.get")
-        system("grep \[SET\] #{log_path_base} > #{log_path_base}.set")
+        system("grep \"\\[GET\\]\" #{log_path_base} > #{log_path_base}.get")
+        system("grep \"\\[SET\\]\" #{log_path_base} > #{log_path_base}.set")
         system("grep \"\\[RSS\\] starting\" #{log_path_base} > #{log_path_base}.rss_starting")
         system("grep \"\\[RSS\\] completed\" #{log_path_base} > #{log_path_base}.rss_completed")
         # dir = File.dirname(log_path_base)
