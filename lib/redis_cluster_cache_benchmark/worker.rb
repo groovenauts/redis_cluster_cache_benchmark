@@ -50,13 +50,15 @@ module RedisClusterCacheBenchmark
     def run
       $client = new_client
       len = @repeat.to_s.length
+      logger.info("[RSS] #{@worker_no}_starting : %d KB" % `ps -o rss= -p #{Process.pid}`.to_i)
       @repeat.times do |idx|
         begin
           load(@scenario)
         ensure
-          logger.info("No.%3d scenario %*d/%*d finished Memory %8d KB" % [@worker_no, len, idx + 1, len, @repeat, `ps -o rss= -p #{Process.pid}`.to_i])
+          logger.info("No.%3d scenario %*d/%*d finished" % [@worker_no, len, idx + 1, len, @repeat])
         end
       end
+      logger.info("[RSS] #{@worker_no}_completed: %d KB" % `ps -o rss= -p #{Process.pid}`.to_i)
     end
   end
 end
