@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = RedisClusterCacheBenchmark::VERSION
   spec.authors       = ["akima"]
   spec.email         = ["akm2000@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{redis benchmark as a cache}
+  spec.description   = %q{redis benchmark as a cache}
   spec.homepage      = ""
   spec.license       = "MIT"
 
