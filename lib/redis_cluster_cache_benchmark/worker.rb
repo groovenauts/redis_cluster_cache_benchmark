@@ -25,7 +25,11 @@ module RedisClusterCacheBenchmark
     end
 
     def logger
-      @logger ||= Logger.new(@log_path || $stdout)
+      unless @logger
+        @logger = Logger.new(@log_path || $stdout)
+        @logger.level = Logger::INFO
+      end
+      @logger
     end
 
     def new_client
