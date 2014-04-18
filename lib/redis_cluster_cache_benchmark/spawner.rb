@@ -1,15 +1,19 @@
 require 'redis_cluster_cache_benchmark'
 
+require 'fileutils'
+
 module RedisClusterCacheBenchmark
   class Spawner
 
     def initialize(options)
+      @base_name = "%s_%s_p%d_r%d" % [options[:classname] || 'Memory', options[:name], options[:process], options[:repeat]]
       @process_number = options.delete(:process).to_i
       @process_number = 5 if @process_number < 1
       @options = options
     end
 
     def run
+      FileUtils.mkdir_p(@options[:log_dir])
       redis_server_starting_rss = process_rss("redis-server")
       options = @options.each_with_object({}) do |(k,v), d|
         unless v.to_s.empty?
@@ -17,10 +21,8 @@ module RedisClusterCacheBenchmark
         end
       end
       cmd = File.expand_path("../../../bin/worker", __FILE__)
-      log_path_base = options["RCCB_LOG_PATH"] ? options["RCCB_LOG_PATH"].dup : nil
-      if log_path_base
+      log_path_base = File.expand_path("#{@base_name}.log", @options[:log_dir])
         system("rm #{log_path_base}.*")
-      end
       pids = []
       @process_number.times do |idx|
         if log_path_base
@@ -37,7 +39,6 @@ module RedisClusterCacheBenchmark
         end
       end
       redis_server_completed_rss = process_rss("redis-server")
-      if log_path_base
         system("cat #{log_path_base}.* > #{log_path_base}")
         system("grep \"\\[GET\\]\" #{log_path_base} > #{log_path_base}.get")
         system("grep \"\\[SET\\]\" #{log_path_base} > #{log_path_base}.set")
@@ -45,11 +46,10 @@ module RedisClusterCacheBenchmark
         system("grep \"\\[RSS\\] completed\" #{log_path_base} > #{log_path_base}.rss_completed")
         # dir = File.dirname(log_path_base)
         # system("ls -la #{dir}")
-        calc_array_summary("#{log_path_base}.get", "get", / ([\d\.]+) microsec\Z/, "%3s: %9.3f microsec")
-        calc_array_summary("#{log_path_base}.set", "set", / ([\d\.]+) microsec\Z/, "%3s: %9.3f microsec")
-        calc_array_summary("#{log_path_base}.rss_starting", "memory before start", / \d+: (\d+) KB\Z/, "%3s: %d KB")
+        calc_array_summary("#{log_path_base}.get", "[GET]", / ([\d\.]+) microsec\Z/, "%3s: %9.3f microsec")
+        calc_array_summary("#{log_path_base}.set", "[SET]", / ([\d\.]+) microsec\Z/, "%3s: %9.3f microsec")
+        calc_array_summary("#{log_path_base}.rss_starting" , "memory before start"  , / \d+: (\d+) KB\Z/, "%3s: %d KB")
         calc_array_summary("#{log_path_base}.rss_completed", "memory after complete", / \d+: (\d+) KB\Z/, "%3s: %d KB")
-      end
       $stdout.puts
       $stdout.puts "redis-server"
       $stdout.puts "starting : #{redis_server_starting_rss} KB"
