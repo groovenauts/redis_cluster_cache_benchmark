@@ -1,6 +1,8 @@
 require 'redis_cluster_cache_benchmark'
 
 require 'fileutils'
+require 'time'
+require 'socket'
 
 module RedisClusterCacheBenchmark
   class Spawner
@@ -13,6 +15,7 @@ module RedisClusterCacheBenchmark
     end
 
     def run
+      start_time = Time.now
       FileUtils.mkdir_p(@options[:log_dir])
       redis_server_starting_rss = process_rss("redis-server")
       options = @options.each_with_object({}) do |(k,v), d|
@@ -38,6 +41,7 @@ module RedisClusterCacheBenchmark
           $stderr.puts("WARN  [#{e.class}] #{e.message}")
         end
       end
+      complete_time = Time.now
       redis_server_completed_rss = process_rss("redis-server")
       system("cat #{log_path_base}.* > #{log_path_base}")
       system("grep \"\\[GET\\]\" #{log_path_base} > #{log_path_base}.get")
@@ -46,6 +50,11 @@ module RedisClusterCacheBenchmark
       system("grep \"\\[RSS\\] completed\" #{log_path_base} > #{log_path_base}.rss_completed")
 
       File.open(File.expand_path("#{@base_name}.md", @options[:log_dir]), "w") do |f|
+        f.puts "hostname    : #{Socket.gethostname}"
+        f.puts "started at  : #{start_time.iso8601}"
+        f.puts "completed at: #{complete_time.iso8601}"
+        f.puts "time: #{complete_time - start_time} sec"
+
         calc_array_summary(f, "#{log_path_base}.get", "[GET]", / ([\d\.]+) microsec\Z/, "%3s: %9.3f microsec")
         calc_array_summary(f, "#{log_path_base}.set", "[SET]", / ([\d\.]+) microsec\Z/, "%3s: %9.3f microsec")
         calc_array_summary(f, "#{log_path_base}.rss_starting" , "memory before start"  , / \d+: (\d+) KB\Z/, "%3s: %d KB")
