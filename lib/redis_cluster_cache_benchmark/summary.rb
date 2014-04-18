@@ -8,18 +8,18 @@ module RedisClusterCacheBenchmark
     # @param [Array<Numeric>] values 整数あるいは実数の配列
     def initialize(values, positions = DEFAULT_POSITIONS)
       values = values.sort
-      cnt = values.length
-      sum = values.inject(:+)
+      cnt = values.empty? ? 0 : values.length
+      sum = values.empty? ? 0 : values.inject(:+)
       @hash = {
         cnt: cnt,
         sum: sum,
-        avg: sum / cnt,
-        min: values.first,
-        max: values.last,
+        avg: (cnt == 0) ? 0 : sum / cnt,
+        min: values.first || 0,
+        max: values.last || 0,
       }
       positions.each do |pos|
         idx = (cnt * pos / 100).round
-        @hash[pos.to_s.to_sym] = values[idx]
+        @hash[pos.to_s.to_sym] = values[idx] || 0
       end
     end
 
