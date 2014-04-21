@@ -1,7 +1,7 @@
 ## Result
 
-* 10 VMs on iMac, 10 worker process run on each VM.
-* the scenario is just GET or SET.
+* 10 VMs on iMac, 10 worker processes run on each VM.
+* the scenario is just GET or SET. https://github.com/groovenauts/redis_cluster_cache_benchmark/blob/1bed988b555b0f07cfb82298fe0010d94c41f3cb/examples/w1r10.rb
 * 1 test repeats the scenario 10,000 times.
 * Master redis node is on apisrv01.
 
@@ -13,7 +13,7 @@
 | RedisWmrs    | apisrv01 | 203.257   | 11.980      | 24.614      | 19.508           | 129,660          | 137,568         | 267,228   |
 | RedisWmrs    | apisrv05 | 178.052   |  7.187      | 47.862      | 16.444           | 124,924          |  73,020         | 197,944   |
 
-RedisWmrs works fater than Redis and Memory cache.
+RedisWmrs works faster than Redis and Memory cache.
 
 For more detail https://github.com/groovenauts/redis_cluster_cache_benchmark/tree/master/doc/vagrant02
 
