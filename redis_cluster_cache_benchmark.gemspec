@@ -21,6 +21,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "redis"
   spec.add_runtime_dependency "redis-sentinel"
   spec.add_runtime_dependency "redis_wmrs"
+  spec.add_runtime_dependency "hiredis"
 
   spec.add_runtime_dependency "tengine_support", "~> 1.2.0"
 
