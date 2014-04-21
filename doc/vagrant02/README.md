@@ -1,3 +1,11 @@
+## Patterns
+
+| Name         | Cache place | Write     | Read        |
+| ------------ |-------------|-----------|-------------|
+| Memory cache | Memory      | memory    | memory      |
+| Redis        | Redis       | to master | from master |
+| RedisWmrs    | Redis       | to master | from slave  |
+
 ## Result
 
 * 10 VMs on iMac, 10 worker processes run on each VM.
