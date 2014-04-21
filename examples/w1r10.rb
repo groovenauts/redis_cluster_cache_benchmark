@@ -1,5 +1,5 @@
 
-chars = ('A'..'Z').to_a + ('a'..'z').to_a + ('0'..'9').to_a
+$chars ||= ('A'..'Z').to_a + ('a'..'z').to_a + ('0'..'9').to_a
 
 i = rand(10000)
 key = i.to_s
