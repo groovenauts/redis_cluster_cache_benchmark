@@ -3,6 +3,7 @@ require 'redis_cluster_cache_benchmark'
 require 'fileutils'
 require 'time'
 require 'socket'
+require 'yaml'
 
 module RedisClusterCacheBenchmark
   class Spawner
