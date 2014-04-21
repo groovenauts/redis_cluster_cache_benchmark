@@ -47,6 +47,7 @@ module RedisClusterCacheBenchmark
       system("cat #{log_path_base}.* > #{log_path_base}")
       system("grep \"\\[GET\\]\" #{log_path_base} > #{log_path_base}.get")
       system("grep \"\\[SET\\]\" #{log_path_base} > #{log_path_base}.set")
+      system("grep \"\\[SCENARIO\\]\" #{log_path_base} > #{log_path_base}.scenario")
       system("grep \"\\[RSS\\] starting\" #{log_path_base} > #{log_path_base}.rss_starting")
       system("grep \"\\[RSS\\] completed\" #{log_path_base} > #{log_path_base}.rss_completed")
 
@@ -62,6 +63,7 @@ module RedisClusterCacheBenchmark
         "workers" => {
           "GET_microsec" => calc_array_summary("#{log_path_base}.get", / ([\d\.]+) microsec\Z/),
           "SET_microsec" => calc_array_summary("#{log_path_base}.set", / ([\d\.]+) microsec\Z/),
+          "SCENARIO_microsec" => calc_array_summary("#{log_path_base}.scenario", / ([\d\.]+) microsec\Z/),
           "RSS_KB_when_start"    => calc_array_summary("#{log_path_base}.rss_starting" , / \d+: (\d+) KB\Z/),
           "RSS_KB_when_complete" => calc_array_summary("#{log_path_base}.rss_completed", / \d+: (\d+) KB\Z/),
         },
