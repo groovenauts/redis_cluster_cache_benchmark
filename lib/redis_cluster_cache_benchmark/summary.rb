@@ -11,15 +11,15 @@ module RedisClusterCacheBenchmark
       cnt = values.empty? ? 0 : values.length
       sum = values.empty? ? 0 : values.inject(:+)
       @hash = {
-        cnt: cnt,
-        sum: sum,
-        avg: (cnt == 0) ? 0 : sum / cnt,
-        min: values.first || 0,
-        max: values.last || 0,
+        "cnt" => cnt,
+        "sum" => sum,
+        "avg" => (cnt == 0) ? 0 : sum / cnt,
+        "min" => values.first || 0,
+        "max" => values.last || 0,
       }
       positions.each do |pos|
         idx = (cnt * pos / 100).round
-        @hash[pos.to_s.to_sym] = values[idx] || 0
+        @hash[pos.to_s] = values[idx] || 0
       end
     end
 
