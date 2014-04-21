@@ -1,24 +1,37 @@
 # RedisClusterCacheBenchmark
 
-TODO: Write a gem description
+This is a benchmark application for some redis clients.
+
+These client libraries are available:
+
+* [redis-rb](https://github.com/redis/redis-rb)
+* [redis-sentinal](https://github.com/flyerhzm/redis-sentinel)
+* [redis-wmrs](https://github.com/groovenauts/redis_wmrs)
 
 ## Installation
 
-Add this line to your application's Gemfile:
+install this application on each server to run redis clients.
 
-    gem 'redis_cluster_cache_benchmark'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install redis_cluster_cache_benchmark
+```
+$ git clone https://github.com/groovenauts/redis_cluster_cache_benchmark.git
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+$ cd path/to/redis_cluster_cache_benchmark
+$ bin/redis_cluster_cache_benchmark --help                                                                                                                                                                                                                                                      [~/groovenauts/redis_cluster_cache_benchmark]
+Usage: redis_cluster_cache_benchmark [options]
+    -N, --name=                      name of test pattern
+    -p, --process=10                 number of process
+    -r, --repeat=1                   number of repeat
+    -s, --scenario=                  path to scenario file
+    -C, --classname=                 client class name
+    -c, --config=                    path to config file
+    -l/Users/akima/groovenauts/redis_cluster_cache_benchmark/log,
+        --log-dir                    path to log file directory
+```
+
 
 ## Contributing
 
