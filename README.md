@@ -21,7 +21,7 @@ $ git clone https://github.com/groovenauts/redis_cluster_cache_benchmark.git
 
 ```
 $ cd path/to/redis_cluster_cache_benchmark
-$ bin/redis_cluster_cache_benchmark --help                                                                                                                                                                                                                                                      [~/groovenauts/redis_cluster_cache_benchmark]
+$ bin/redis_cluster_cache_benchmark --help
 Usage: redis_cluster_cache_benchmark [options]
     -N, --name=                      name of test pattern
     -p, --process=10                 number of process
