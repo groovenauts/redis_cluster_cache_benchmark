@@ -52,6 +52,11 @@ bin/redis_cluster_cache_benchmark -s examples/w1r10.rb -r 10000 -p 10 -N simple 
 bin/redis_cluster_cache_benchmark -s examples/w1r10.rb -r 10000 -p 10 -N simple -C RedisWmrs -c examples/redis_with_sentinel.yml
 ```
 
+### Riak
+
+```
+bin/redis_cluster_cache_benchmark -s examples/w1r10_riak.rb -N riak_devrel -C Riak::Client -c examples/riak_devrel_5.yml
+```
 
 
 

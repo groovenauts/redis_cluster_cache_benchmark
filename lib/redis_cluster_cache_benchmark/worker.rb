@@ -2,10 +2,6 @@ require "redis_cluster_cache_benchmark"
 
 require 'logger'
 
-require 'redis'
-require 'redis-sentinel'
-require 'redis_wmrs'
-
 module RedisClusterCacheBenchmark
   class Worker
     def initialize(options)
@@ -38,9 +34,18 @@ module RedisClusterCacheBenchmark
         {host: "127.0.0.1", port: 6379}
       case @classname
       when 'Redis', 'RedisWmrs' then
+        require 'redis'
+        require 'redis-sentinel'
+        require 'redis_wmrs'
         klass = Object.const_get(@classname)
         original = klass.new(config)
         original.client.logger = logger
+        return LoggingClient.new(original, logger)
+      when 'Riak::Client' then
+        require 'riak'
+        require 'tengine/support/core_ext/hash/keys'
+        klass = Object.const_get(@classname)
+        original = klass.new(config.deep_symbolize_keys)
         return LoggingClient.new(original, logger)
       when "RedisClusterCacheBenchmark::MemoryStorage" then
         original = RedisClusterCacheBenchmark::MemoryStorage.new

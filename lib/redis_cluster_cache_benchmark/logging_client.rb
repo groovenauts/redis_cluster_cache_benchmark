@@ -15,6 +15,17 @@ module RedisClusterCacheBenchmark
       __logging__("[SET]"){ @impl.set(key, value, options) }
     end
 
+
+    def get_object(bucket, key, options = {})
+      __logging__("[GET]"){ @impl.get_object(bucket, key, options) }
+    end
+    def store(bucket, key, value)
+      bucket = @impl.bucket(bucket)
+      obj = bucket.new(key)
+      obj.data = value
+      __logging__("[SET]"){ obj.store }
+    end
+
     private
 
     MEGA = 1_000_000
